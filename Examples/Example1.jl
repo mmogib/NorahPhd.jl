@@ -1,6 +1,6 @@
 using JuMP
 import Ipopt
-export P1, P2, D2, Γ
+
 function P1(z)
     model = Model(Ipopt.Optimizer)
     @variable(model, x1)
