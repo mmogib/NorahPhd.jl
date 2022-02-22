@@ -1,5 +1,7 @@
 module NorahPhd
+include("./Example1.jl")
+include("./Algorithm1.jl")
 
-# Write your package code here.
-
+Xbar, Tbar, V = algo1(Γ, P1, P2, D2, ϵ = 0.05)
+print(V)
 end
