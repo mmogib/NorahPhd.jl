@@ -1,21 +1,25 @@
 include("./Types.jl")
 import Polyhedra, CDDLib
-export algo1
-function algo1(Γ, P1, P2, D2; ϵ = 0.05)
+
+"""
+    primal(Γ, P1, P2, D2, Cone, Dualcone ; ϵ=0.05)
+
+implements Algorithm1 in 
+Löhne, A., Rudloff, B. & Ulus, F. Primal and dual approximation algorithms for convex vector optimization problems. J Glob Optim 60, 713–736 (2014). [Download](https://doi.org/10.1007/s10898-013-0136-0) 
+"""
+function primal(Γ, P1, P2, D2, Cone, Dualcone; ϵ = 0.05)
     # any linearly independent q vectors in cone C in R^q   
     # c1, c2, ..., cq-1, c where c in intC
-    c1 = [1; 2]
-    c = [1; 1]
-    C = [c1 c]
-    (_, q) = size(C)
+
+    C = Cone
+    (_, q) = size(Cone)
     T = C
     Tinv = inv(T)
 
     # line 1 of Algorithm 1
     # q geberators of vectors of the dual C+ 
-    z1 = [1; 0]
-    z2 = [0; 1]
-    Z = [z1 z2]
+    
+    Z = Dualcone
     # (x1, _) = P1(Z[:, 1])
     # (x2, _) = P1(Z[:, 2])
     Xbar = [first(P1(Z[:, i])) for i = 1:q]
