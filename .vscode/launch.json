@@ -8,6 +8,16 @@
         {
             "type": "julia",
             "request": "launch",
+            "name": "Debug Examples",
+            "program": "${workspaceRoot}/Examples/Examples.jl",
+            "stopOnEntry": false,
+            "cwd": "${workspaceFolder}",
+            "juliaEnv": "${command:activeJuliaEnvironment}",
+        },
+        
+        {
+            "type": "julia",
+            "request": "launch",
             "name": "Run main module",
             "program": "${workspaceRoot}/src/NorahPhd.jl",
             "stopOnEntry": false,

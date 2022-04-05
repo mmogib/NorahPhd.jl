@@ -7,7 +7,7 @@ export primal
 implements Algorithm1 in 
 Löhne, A., Rudloff, B. & Ulus, F. Primal and dual approximation algorithms for convex vector optimization problems. J Glob Optim 60, 713–736 (2014). [Download](https://doi.org/10.1007/s10898-013-0136-0) 
 """
-function primal(Γ, P1, P2, D2, Cone, Dualcone; ϵ = 0.05, max_num_vertices = 100)
+function primal(Γ, P1, P2, D2, Cone, Dualcone; ϵ = 0.05)
     # any linearly independent q vectors in cone C in R^q   
     # c1, c2, ..., cq-1, c where c in intC
     C = Cone
@@ -30,10 +30,7 @@ function primal(Γ, P1, P2, D2, Cone, Dualcone; ϵ = 0.05, max_num_vertices = 10
     D = hcat([Tbar[i][1:q-1][1] for i in 1:q], [Z[:, i]' * Γ(Xbar[i]) for i = 1:q])
     
     # bags to collect the vertices
-    # Vknown = similar(rand(100),Vertex2D{Float64})
-    
-    # Vknown = Array{Union{Missing,Vertex2D{Float64}}}(missing, max_num_vertices)
-    V = []
+    Vknown = []
     # flag to break the loop
     go = true
     while go
@@ -51,13 +48,13 @@ function primal(Γ, P1, P2, D2, Cone, Dualcone; ϵ = 0.05, max_num_vertices = 10
         # for each vertex found
         for v0 in vv
             # check if this vertex has been visited before? 
-            if ~(Vertex2D(v0...) ∈ Vertex2D.(V))
+            if ~(Vertex2D(v0...) ∈ Vertex2D.(Vknown))
                 # if the vertex has not been visited
                 # v0_as_vertic = Vertex2D(v0...)
                 ## store this vertex as visited
                 # Vknown[k] = v0_as_vertic
                 ## collect it in the bag
-                push!(V, v0)
+                push!(Vknown, v0)
                 # increase the index k
                 k = k + 1
                 # line 10
@@ -97,6 +94,6 @@ function primal(Γ, P1, P2, D2, Cone, Dualcone; ϵ = 0.05, max_num_vertices = 10
         end
 
     end
-    return Xbar, Tbar, V, P_poly
+    return Xbar, Tbar, Vknown, P_poly
 end
     
